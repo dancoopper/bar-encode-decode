@@ -43,32 +43,30 @@ public class decode {
         my_Dict.put("034", ",");
         my_Dict.put("035", "-");
 
-        Scanner fPath = new Scanner(System.in);
+       Scanner fPath = new Scanner(System.in);
         System.out.print("what is the full path to the encoded file: ");
         String path = fPath.nextLine();
 
         File file = new File(""+path);
         Scanner input = null;
         try {
-            input = new Scanner(file);
+            input = new Scanner(file);//reads the file
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        while(input.hasNextLine()) {
-            String code = input.nextLine();
+        while(input.hasNextLine()) {//reads as long as there is another line to read
+            String code = input.nextLine(); 
             String value = "";
             int counter = 0;
             for (int i = 0; i < code.length(); i++) {
-
-                String numbers = "" + code.charAt(i);
-                value = value + numbers;
+                String numbers = "" + code.charAt(i); //gets one out of three numbers per letter
+                value = value + numbers; //adds said numbers to the "value" string
                 counter += 1;
-                if (counter % 3 != 0) {
+                if (counter % 3 != 0) {//if it's not the third number(meaning it isn't the full letter) it will skip over the print
                     continue;
                 }
-                System.out.print(my_Dict.get(value));
-                value = "";
+                System.out.print(my_Dict.get(value));//"decodes" the letter by looking it up in the dict
+                value = "";//re-sets the value of the "value" string
             }
         }
     }
-}
