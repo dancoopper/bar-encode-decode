@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class decode {
     public static void main(String[] args) {
@@ -38,19 +41,34 @@ public class decode {
         my_Dict.put("032", "?");
         my_Dict.put("033", "\n");
         my_Dict.put("034", ",");
+        my_Dict.put("035", "-");
 
-        String code = "001003003015018004009014007029020015029001012012029011014015023014029012001023019029015006029001022009001020009015014034029020008005018005029009019029014015029023001025029001029002005005029019008015021012004029002005029001002012005029020015029006012025028029009020019029023009014007019029001018005029020015015029019013001012012029020015029007005020029009020019029006001020029012009020020012005029002015004025029015006006029020008005029007018015021014004028029020008005029002005005034029015006029003015021018019005034029006012009005019029001014025023001025029002005003001021019005029002005005019029004015014030020029003001018005029023008001020029008021013001014019029020008009014011029009019029009013016015019019009002012005028029025005012012015023034029002012001003011028029025005012012015023034029002012001003011028029025005012012015023034029002012001003011028029025005012012015023034029002012001003011028";
-        StringBuilder value = new StringBuilder();
-        int counter = 0;
-        for(int i = 0; i<code.length(); i++){
-            String numbers = "" + code.charAt(i);
-            value.append(numbers);
-            counter += 1;
-            if(counter%3 != 0){
-                continue;
+        Scanner fPath = new Scanner(System.in);
+        System.out.print("what is the full path to the encoded file: ");
+        String path = fPath.nextLine();
+
+        File file = new File(""+path);
+        Scanner input = null;
+        try {
+            input = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        while(input.hasNextLine()) {
+            String code = input.nextLine();
+            String value = "";
+            int counter = 0;
+            for (int i = 0; i < code.length(); i++) {
+
+                String numbers = "" + code.charAt(i);
+                value = value + numbers;
+                counter += 1;
+                if (counter % 3 != 0) {
+                    continue;
+                }
+                System.out.print(my_Dict.get(value));
+                value = "";
             }
-            System.out.print(my_Dict.get(value));
-            value = "";
         }
     }
 }
