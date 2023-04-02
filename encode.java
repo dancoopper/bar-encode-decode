@@ -1,10 +1,18 @@
+import java.io.*;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class encode {
-    public static void main(String[] args) {
+
+    public static File Infile;
+    public static File Outfile;
+
+
+
+    public static void Read(File Infile){
         HashMap<String, String> my_Dict = new HashMap<>();
 
-       my_Dict.put("a", "001");
+        my_Dict.put("a", "001");
         my_Dict.put("b", "002");
         my_Dict.put("c", "003");
         my_Dict.put("d", "004");
@@ -33,20 +41,53 @@ public class encode {
         my_Dict.put("!", "027");
         my_Dict.put(".", "028");
         my_Dict.put(" ", "029");
-        my_Dict.put("'","030");
+        my_Dict.put("'", "030");
         my_Dict.put("I", "031");
         my_Dict.put("?", "032");
         my_Dict.put("\n", "033");
         my_Dict.put(",", "034");
-                
-        String words = "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black.";
-        words = words.toLowerCase();
-        for(int i = 0; i<words.length(); i++){
+        my_Dict.put("-", "035");
 
-          String letter = "" + words.charAt(i);
 
-            System.out.print(my_Dict.get(letter));
+        try {
+            Scanner input = new Scanner(Infile);
+
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+                line = line.toLowerCase();
+
+                StringBuilder out = new StringBuilder();
+                for(int i = 0; i< line.length(); i++) {
+                    String letter = "" + line.charAt(i);
+
+                    out.append(my_Dict.get(letter));
+                }
+                FileWriter fileWriter = new FileWriter(Outfile, true);
+                BufferedWriter bw = new BufferedWriter(fileWriter);
+                bw.write(out.toString());
+                bw.newLine();
+                bw.close();
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }catch (IOException ev){
+            throw new RuntimeException(ev);
+        }
+
+    }
+
+    public static void main(String[] args) {
+            System.out.print("what is the path of the INPUT file: ");
+            Scanner input = new Scanner(System.in);
+            String inPath = input.nextLine();
+            Infile = new File(""+inPath);
+
+            System.out.print("what is the path of the OUTPUT file: ");
+            Scanner output = new Scanner(System.in);
+            String outPath = output.nextLine();
+            Outfile = new File(""+outPath);
+
+            Read(Infile);
 
         }
     }
-}
