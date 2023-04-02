@@ -9,7 +9,7 @@ public class encode {
 
 
 
-    public static void Read(File Infile){
+    public static void readNwright(File Infile){
         HashMap<String, String> my_Dict = new HashMap<>();
 
         my_Dict.put("a", "001");
@@ -52,21 +52,20 @@ public class encode {
         try {
             Scanner input = new Scanner(Infile);
 
-            while (input.hasNextLine()) {
-                String line = input.nextLine();
-                line = line.toLowerCase();
+            while (input.hasNextLine()) {//reads as long as there is another line to read
+                String line = input.nextLine();//read the file line by line
+                line = line.toLowerCase();//set to lower case so that it is the same message no mater the case
 
                 StringBuilder out = new StringBuilder();
-                for(int i = 0; i< line.length(); i++) {
+                for(int i = 0; i< line.length(); i++) {//for the length of the line it goes through letter by letter and "encode" them
                     String letter = "" + line.charAt(i);
-
-                    out.append(my_Dict.get(letter));
+                    out.append(my_Dict.get(letter));//this is the "encoding"
                 }
-                FileWriter fileWriter = new FileWriter(Outfile, true);
-                BufferedWriter bw = new BufferedWriter(fileWriter);
+                FileWriter fileWriter = new FileWriter(Outfile, true);//make the obj that we use to wright to the output file
+                BufferedWriter bw = new BufferedWriter(fileWriter);//the other obj we use
                 bw.write(out.toString());
                 bw.newLine();
-                bw.close();
+                bw.close();//make sure that you are cleaning up after yourself
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -87,7 +86,7 @@ public class encode {
             String outPath = output.nextLine();
             Outfile = new File(""+outPath);
 
-            Read(Infile);
+            readNwright(Infile);
 
         }
     }
